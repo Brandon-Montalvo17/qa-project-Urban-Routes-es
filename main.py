@@ -53,19 +53,25 @@ class UrbanRoutesPage:
 
 
     def __init__(self, driver):
-        self.driver = driver
+        self.driver = webdriver.Chrome()
 
-    def set_from(self, from_address):
-        self.driver.find_element(*self.from_field).send_keys(from_address)
+    def set_from(self, address_from):
+        self.driver.find_element(*self.from_field).send_keys(data.address_from)
 
-    def set_to(self, to_address):
-        self.driver.find_element(*self.to_field).send_keys(to_address)
+    def set_to(self, address_to):
+        self.driver.find_element(*self.to_field).send_keys(data.address_to)
 
     def get_from(self):
         return self.driver.find_element(*self.from_field).get_property('value')
 
     def get_to(self):
         return self.driver.find_element(*self.to_field).get_property('value')
+
+    def set_route(self, address_from, address_to):
+        self.set_from(address_from)
+        self.set_to(address_to)
+
+
 
     def comfort_button_req(self):
         time.sleep(2)
@@ -108,11 +114,9 @@ class TestUrbanRoutes:
     message_driver = (By.XPATH, "//*[@id='comment']")
     message_send = (By.CSS_SELECTOR, "Comment")
     request_button = (By.CLASS_NAME, "reqs-head")
-    manta_panuelos = (By.CLASS_NAME, "r-sw-label")
-    helados = (By.CLASS_NAME, "r-counter-label")
+    blanket_handkerchief = (By.CLASS_NAME, "r-sw-label")
+    icecream = (By.CLASS_NAME, "r-counter-label")
     taxi_modal = (By.CLASS_NAME, "smart-button-main")
-
-
 
 
     @classmethod
@@ -122,6 +126,7 @@ class TestUrbanRoutes:
         capabilities = DesiredCapabilities.CHROME
         capabilities["goog:loggingPrefs"] = {'performance': 'ALL'}
         cls.driver = webdriver.Chrome()
+
 
     def test_set_route(self):
         self.driver.get(data.urban_routes_url)
